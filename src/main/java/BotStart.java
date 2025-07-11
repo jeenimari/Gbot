@@ -1,5 +1,6 @@
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,7 +17,9 @@ public class BotStart {
     private static final String COOKIE_PATH = "cookies.json";
 
     public static void main(String[] args) {
-        System.setProperty("webdriver.chrome.driver", "C:/Users/user/Downloads/chromedriver-win32/chromedriver-win32/chromedriver.exe");
+        // ✅ 자동으로 chromedriver 다운로드 및 설정
+        WebDriverManager.chromedriver().setup();
+
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--disable-blink-features=AutomationControlled");
@@ -32,6 +35,8 @@ public class BotStart {
             driver.get("https://www.gmarket.co.kr");
             System.out.println("🟢 G마켓 접속 완료");
 
+            Thread.sleep(1000);
+
             ((JavascriptExecutor) driver).executeScript("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})");
 
             Thread.sleep(1000 + new Random().nextInt(2000));
@@ -41,7 +46,8 @@ public class BotStart {
             Thread.sleep(2000);
 
             WebElement searchBox = wait.until(ExpectedConditions.elementToBeClickable(By.id("form__search-keyword")));
-            String keyword = "흙당근";
+            //검색어 입력
+            String keyword = "";
             for (char ch : keyword.toCharArray()) {
                 searchBox.sendKeys(String.valueOf(ch));
                 Thread.sleep(160);
@@ -68,7 +74,7 @@ public class BotStart {
 
             int count = 0;
             for (String productUrl : productUrls) {
-                if (count >= 20) break;
+                if (count >= 25) break;
 
                 try {
                     driver.navigate().to(productUrl);
@@ -82,9 +88,10 @@ public class BotStart {
                     }
 
                     // 미니샵 링크 클릭
+                    String miniShopUrl = "";
                     try {
                         WebElement miniShopLink = driver.findElement(By.cssSelector("span.text__seller > a"));
-                        String miniShopUrl = miniShopLink.getAttribute("href");
+                         miniShopUrl = miniShopLink.getAttribute("href");
                         if (miniShopUrl != null && !miniShopUrl.isEmpty()) {
                             driver.navigate().to(miniShopUrl);
                             Thread.sleep(2000);
@@ -109,6 +116,10 @@ public class BotStart {
                         System.out.println("⚠️ 중복된 판매자 - 건너뜀: " + shopName);
                         continue;
                     }
+                    if(!phone.startsWith("010")&& !phone.startsWith("010-")){
+                        System.out.println("️️010 번호가 아님 제외"+ phone);
+                        continue;
+                    }
                     visitedSellers.add(uniqueKey);
 
                     String ceo = getTextSafely(driver, By.xpath("//div[@class='seller_info_box']//dt[text()='대표자']/following-sibling::dd[1]"));
@@ -124,6 +135,9 @@ public class BotStart {
                     System.out.println("이메일: " + email);
                     System.out.println("사업자번호: " + bizNo);
                     System.out.println("주소: " + address);
+                    System.out.println("미니샵 URL: " + miniShopUrl);
+                    System.out.println("--------------------");
+
 
                     count++;
 

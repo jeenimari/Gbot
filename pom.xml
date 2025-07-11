@@ -2,17 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.gmarketbot</groupId>
-    <artifactId>gmarket-agent-bot</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <!-- 프로젝트 기본 정보 -->
+    <groupId>com.example</groupId>
+    <artifactId>gbot</artifactId>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
+    <name>Gbot</name>
+    <description>Gmarket Bot Application</description>
+
+    <!-- Java 버전 설정 -->
     <properties>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -24,6 +30,13 @@
             <version>4.21.0</version>
         </dependency>
 
+        <!-- WebDriverManager -->
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.8.0</version>
+        </dependency>
+
         <!-- Gson -->
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -31,7 +44,7 @@
             <version>2.10.1</version>
         </dependency>
 
-        <!-- Lombok (Getter/Setter 자동 생성) -->
+        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -39,14 +52,14 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- Apache POI (Excel 저장용) -->
+        <!-- Apache POI -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>5.2.5</version>
         </dependency>
 
-        <!-- Spring Core (옵션: 나중에 REST나 Task Scheduler 쓸 때 유용) -->
+        <!-- Spring Core -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -62,8 +75,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>23</source>
-                    <target>23</target>
+                    <source>11</source>
+                    <target>11</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
@@ -74,9 +87,10 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.1.0</version>
                 <configuration>
-                    <mainClass>com.gmarketbot.BotStart</mainClass>
+                    <mainClass>BotStart</mainClass>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 </project>
